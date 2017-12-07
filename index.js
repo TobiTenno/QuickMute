@@ -9,6 +9,10 @@ const config = {
   opRole: process.env.OP_ROLE,
   logChannel: process.env.LOG_CHANNEL,
   guildId: process.env.GUILD_ID,
+  deletePics: 100000,
+  banIncoming: ['https://i.imgur.com/iTV6wwM.png', 'https://i.imgur.com/URrJQ1U.png'],
+  readThePins: ['https://i.imgur.com/1im5Wmu.png'], 
+  wrongChannel: ['https://i.imgur.com/FUQYQoC.png'],
 };
 let logChannel;
 let guild;
@@ -84,7 +88,7 @@ client.on('message', async (message) => {
 	log(`Muted members of ${vc.name} by ${message.author}`);
     message.delete();
   }
-  
+
   if (message.content === `${config.prefix}um` && message.member.roles.get(config.opRole) && message.member.voiceChannel) {
     // unmute and react
     const vc = message.member.voiceChannel;
@@ -97,8 +101,33 @@ client.on('message', async (message) => {
     	muteds[vc.id] = undefined;
     	log(`Unuted members of ${vc.name} by ${message.author}`);
     }
-	message.delete();
+    message.delete();
   }
+
+  if (message.content === `${config.prefix}bi` && message.member.roles.get(config.opRole)) {
+    const bi = await message.channel.send('', { file: { attachment: config.banIncoming[0], name: 'Ban Incoming.png' } });
+    message.delete();
+    bi.delete(config.deletePics);
+  }
+
+  if (message.content === `${config.prefix}bi2` && message.member.roles.get(config.opRole)) {
+    const bi = await message.channel.send('', { file: { attachment: config.banIncoming[1], name: 'Ban Incoming.png' } });
+    message.delete();
+    bi.delete(config.deletePics);
+  }
+
+  if (message.content === `${config.prefix}rtp` && message.member.roles.get(config.opRole)) {
+    const rtp = await message.channel.send('', { file: { attachment: config.readThePins[0], name: 'Read the Pins.png' } });
+    message.delete();
+    rtp.delete(config.deletePics);
+  }
+
+  if (message.content === `${config.prefix}wc` && message.member.roles.get(config.opRole)) {
+    const wc = await message.channel.send('', { file: { attachment: config.wronChannel[0], name: 'Wrong Channel.png' } });
+    message.delete();
+    wc.delete(config.deletePics);
+  }
+
 });
 
 client.login(config.token);
