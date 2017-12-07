@@ -68,66 +68,73 @@ client.on('message', async (message) => {
   // don't call if the caller is a bot  or it's not in the designated guild
   if (message.author.bot || (message.channel.type !== 'text' && message.guild.id !== config.guildId)) return;
 
-  if (message.content === `${config.prefix}qm` && message.member.roles.get(config.opRole) && message.member.voiceChannel) {
-    // mute and react
-    const vc = message.member.voiceChannel;
-    muteds[vc.id] = vc.members.map((member) => {
-		if (!member.roles.get(config.opRole)) {
-			return member.id;
-		}
-		return undefined;
-	}).filter(item => typeof item !== 'undefined');
-	await vc.overwritePermissions(config.opRole, {SPEAK: true});
-	await vc.overwritePermissions(vc.guild.id, {SPEAK: false});
-   await Promise.all(vc.members.map(member => {
-		if (!member.roles.get(config.opRole)) {
-			return member.setMute(true, `QuickMuted by ${message.author.tag}(${message.author.id})`);
-		}
-		return undefined;
-	}));
-	log(`Muted members of ${vc.name} by ${message.author}`);
-    message.delete();
-  }
-
-  if (message.content === `${config.prefix}um` && message.member.roles.get(config.opRole) && message.member.voiceChannel) {
-    // unmute and react
-    const vc = message.member.voiceChannel;
-    if (muteds[vc.id]) {
-    	const vcMuteds = muteds[vc.id];
-        await vc.overwritePermissions(vc.guild.id, {SPEAK: true});
-    	await Promise.all(vcMuteds.map((id) => {
-    		return guild.members.get(id).setMute(false, `Unmuted after QuickMute by ${message.author.tag}(${message.author.id})`);
-    	}));
-    	muteds[vc.id] = undefined;
-    	log(`Unuted members of ${vc.name} by ${message.author}`);
+  if (message.member.roles.get(config.opRole)) {
+    if (message.member.voiceChannel) {
+      if (message.content === `${config.prefix}qm`) {
+        // mute and react
+        const vc = message.member.voiceChannel;
+        muteds[vc.id] = vc.members.map((member) => {
+          if (!member.roles.get(config.opRole)) {
+            return member.id;
+          }
+          return undefined;
+        }).filter(item => typeof item !== 'undefined');
+        await vc.overwritePermissions(config.opRole, {SPEAK: true});
+        await vc.overwritePermissions(vc.guild.id, {SPEAK: false});
+        await Promise.all(vc.members.map((member) => {
+          if (!member.roles.get(config.opRole)) {
+            return member.setMute(true, `QuickMuted by ${message.author.tag} (${message.author.id})`);
+          }
+          return undefined;
+        }).filter(p => typeof p !== 'undefined'));
+        log(`Muted members of ${vc.name} by ${message.author}`);
+        message.delete();
+      }
+      
+      if (message.content === `${config.prefix}um`) {
+        // unmute and react
+        const vc = message.member.voiceChannel;
+        if (muteds[vc.id]) {
+          const vcMuteds = muteds[vc.id];
+            await vc.overwritePermissions(vc.guild.id, {SPEAK: true});
+            await Promise.all(vcMuteds.map((id) => {
+              const member = guild.members.get(id);
+              if (member) {
+                return member.setMute(false, `Unmuted by ${message.author.tag} (${message.author.id})`);
+              }
+              return undefined;
+            }).filter(p => typeof p !== 'undefined'));
+          muteds[vc.id] = undefined;
+          log(`Unuted members of ${vc.name} by ${message.author}`);
+        }
+        message.delete();
+      }
     }
-    message.delete();
-  }
 
-  if (message.content === `${config.prefix}bi` && message.member.roles.get(config.opRole)) {
-    const bi = await message.channel.send('', { file: { attachment: config.banIncoming[0], name: 'Ban Incoming.png' } });
-    message.delete();
-    bi.delete(config.deletePics);
-  }
+    if (message.content === `${config.prefix}bi`) {
+      const bi = await message.channel.send('', { file: { attachment: config.banIncoming[0], name: 'Ban Incoming.png' } });
+      message.delete();
+      bi.delete(config.deletePics);
+    }
 
-  if (message.content === `${config.prefix}bi2` && message.member.roles.get(config.opRole)) {
-    const bi = await message.channel.send('', { file: { attachment: config.banIncoming[1], name: 'Ban Incoming.png' } });
-    message.delete();
-    bi.delete(config.deletePics);
-  }
+    if (message.content === `${config.prefix}bi2`) {
+      const bi = await message.channel.send('', { file: { attachment: config.banIncoming[1], name: 'Ban Incoming.png' } });
+      message.delete();
+      bi.delete(config.deletePics);
+    }
 
-  if (message.content === `${config.prefix}rtp` && message.member.roles.get(config.opRole)) {
-    const rtp = await message.channel.send('', { file: { attachment: config.readThePins[0], name: 'Read the Pins.png' } });
-    message.delete();
-    rtp.delete(config.deletePics);
-  }
+    if (message.content === `${config.prefix}rtp`) {
+      const rtp = await message.channel.send('', { file: { attachment: config.readThePins[0], name: 'Read the Pins.png' } });
+      message.delete();
+      rtp.delete(config.deletePics);
+    }
 
-  if (message.content === `${config.prefix}wc` && message.member.roles.get(config.opRole)) {
-    const wc = await message.channel.send('', { file: { attachment: config.wronChannel[0], name: 'Wrong Channel.png' } });
-    message.delete();
-    wc.delete(config.deletePics);
+    if (message.content === `${config.prefix}wc`) {
+      const wc = await message.channel.send('', { file: { attachment: config.wrongChannel[0], name: 'Wrong Channel.png' } });
+      message.delete();
+      wc.delete(config.deletePics);
+    }
   }
-
 });
 
 client.login(config.token);
