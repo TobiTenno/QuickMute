@@ -129,7 +129,7 @@ client.on('message', async (message) => {
       rtp.delete(config.deletePics);
     }
 
-    if (message.content === `${config.prefix}wc`) {
+    if (message.content === `${config.prefix}wongchannel`) {
       const wc = await message.channel.send('', { file: { attachment: config.wrongChannel[0], name: 'Wrong Channel.png' } });
       message.delete();
       wc.delete(config.deletePics);
