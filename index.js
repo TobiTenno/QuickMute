@@ -147,7 +147,7 @@ client.on('message', async (message) => {
             before: message.id
           });
     const context = messagesContext.map(msg => `**${msg.author}**\n\t${msg.content} ` +
-      `${msg.attachments.length ? msg.attachments.map(attachment => attachment.url).join(' | ') : ''}`).join('\n');
+      `${msg.attachments.length ? msg.attachments.array().map(attachment => attachment.url).join(' | ') : ''}`).join('\n');
     
     await reportChannel.send(config.pingOp ? '@here' : undefined, {
       embed: {
