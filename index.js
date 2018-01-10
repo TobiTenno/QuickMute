@@ -161,6 +161,7 @@ client.on('message', async (message) => {
           value: message.channel.toString(),
           inlinie: true,
         }],
+        timestamp: new Date(),
       }
     });
     await message.delete();
