@@ -8,6 +8,7 @@ const config = {
   prefix: process.env.PREFIX || '!',
   opRole: process.env.OP_ROLE,
   logChannel: process.env.LOG_CHANNEL,
+  reportChannel: process.env.REPORT_CHANNEL || process.env.LOG_CHANNEL,
   guildId: process.env.GUILD_ID,
   deletePics: 100000,
   banIncoming: ['https://i.imgur.com/iTV6wwM.png', 'https://i.imgur.com/URrJQ1U.png'],
@@ -15,6 +16,7 @@ const config = {
   wrongChannel: ['https://i.imgur.com/FUQYQoC.png'],
 };
 let logChannel;
+let reportChannel;
 let guild;
 
 const muteds = {};
@@ -53,6 +55,7 @@ function log(message, type, color) {
 
 client.on('ready', () => {
   logChannel = client.channels.get(config.logChannel);
+  reportChannel = client.channels.get(config.reportChannel);
   guild = client.guilds.get(config.guildId);
   log(`Bot started. ${client.users.size} users online.`, '', 0x77dd77);
   client.user.setPresence({
@@ -134,6 +137,19 @@ client.on('message', async (message) => {
       message.delete();
       wc.delete(config.deletePics);
     }
+  }
+  
+  if (message.content.startsWith(`${config.prefix}report`)) {
+    await reportChannel.send(undefined, {
+      embed: {
+        color: 0xff0000,
+        title: `New Report from ${message.author.tag}`, 
+        fields: [{
+          name: '_ _',
+          value: message.content.replace(`${config.prefix}report`, ''),
+        }],
+      }
+    });
   }
 });
 
