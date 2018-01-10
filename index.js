@@ -148,7 +148,7 @@ client.on('message', async (message) => {
         title: `New Report from ${message.author.tag}`, 
         fields: [{
           name: 'Channel',
-          value: message.channel,
+          value: message.channel.toString(),
           inlinie: true,
         }, {
           name: '_ _',
