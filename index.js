@@ -11,6 +11,7 @@ const config = {
   reportChannel: process.env.REPORT_CHANNEL || process.env.LOG_CHANNEL,
   guildId: process.env.GUILD_ID,
   deletePics: 100000,
+  pingOp: process.env.PING_FOR_REPORT === 'true',
   banIncoming: ['https://i.imgur.com/iTV6wwM.png', 'https://i.imgur.com/URrJQ1U.png'],
   readThePins: ['https://i.imgur.com/1im5Wmu.png'], 
   wrongChannel: ['https://i.imgur.com/FUQYQoC.png'],
@@ -18,6 +19,7 @@ const config = {
 let logChannel;
 let reportChannel;
 let guild;
+let opRole;
 
 const muteds = {};
 
@@ -57,6 +59,7 @@ client.on('ready', () => {
   logChannel = client.channels.get(config.logChannel);
   reportChannel = client.channels.get(config.reportChannel);
   guild = client.guilds.get(config.guildId);
+  opRole = guild.roles.get(config.opRole);
   log(`Bot started. ${client.users.size} users online.`, '', 0x77dd77);
   client.user.setPresence({
     status: 'online',
@@ -140,7 +143,7 @@ client.on('message', async (message) => {
   }
   
   if (message.content.startsWith(`${config.prefix}report`)) {
-    await reportChannel.send(undefined, {
+    await reportChannel.send(config.pingOp ? opRole.toString() : undefined, {
       embed: {
         color: 0xff0000,
         title: `New Report from ${message.author.tag}`, 
