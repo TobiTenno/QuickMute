@@ -142,6 +142,13 @@ client.on('message', async (message) => {
   }
   
   if (message.content.startsWith(`${config.prefix}report`)) {
+    const messagesContext = await message.channel.fetchMessages({
+            limit: 5,
+            before: message.id
+          });
+    const context = messagesContext.map(msg => `**${msg.author}**\n\t${msg.content} ` +
+      `${msg.attachments.length ? msg.attachments.map(attachment => attachment.url).join(' | ') : ''}`).join('\n');
+    
     await reportChannel.send(config.pingOp ? '@here' : undefined, {
       embed: {
         color: 0xff0000,
@@ -152,10 +159,7 @@ client.on('message', async (message) => {
           inline: true,
         }, {
           name: 'Context',
-          value: (await message.channel.fetchMessages({
-            limit: 5,
-            before: message.id
-          })).map(message => `**${message.author}**\n\t${message.content}`).join('\n')
+          value: context,
         }, {
           name: 'Channel',
           value: message.channel.toString(),
