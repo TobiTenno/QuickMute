@@ -147,10 +147,6 @@ client.on('message', async (message) => {
         color: 0xff0000,
         title: `New Report from ${message.author.tag}`, 
         fields: [{
-          name: 'Channel',
-          value: message.channel.toString(),
-          inlinie: true,
-        }, {
           name: '_ _',
           value: message.content.replace(`${config.prefix}report`, ''),
           inline: true,
@@ -159,7 +155,11 @@ client.on('message', async (message) => {
           value: (await message.channel.fetchMessages({
             limit: 5,
             before: message.id
-          })).map(message => `${message.author.tag}\n\t${message.content}`).join('\n')
+          })).map(message => `**${message.author}**\n\t${message.content}`).join('\n')
+        }, {
+          name: 'Channel',
+          value: message.channel.toString(),
+          inlinie: true,
         }],
       }
     });
