@@ -59,7 +59,6 @@ client.on('ready', () => {
   logChannel = client.channels.get(config.logChannel);
   reportChannel = client.channels.get(config.reportChannel);
   guild = client.guilds.get(config.guildId);
-  opRole = guild.roles.get(config.opRole);
   log(`Bot started. ${client.users.size} users online.`, '', 0x77dd77);
   client.user.setPresence({
     status: 'online',
@@ -143,7 +142,7 @@ client.on('message', async (message) => {
   }
   
   if (message.content.startsWith(`${config.prefix}report`)) {
-    await reportChannel.send(config.pingOp ? opRole.toString() : undefined, {
+    await reportChannel.send(config.pingOp ? '@here' : undefined, {
       embed: {
         color: 0xff0000,
         title: `New Report from ${message.author.tag}`, 
