@@ -164,6 +164,10 @@ client.on('message', async (message) => {
           name: 'Channel',
           value: message.channel.toString(),
           inlinie: true,
+        }, {
+          name: 'Reporter',
+          value: message.author.toString(),
+          inlinie: true,
         }],
         timestamp: new Date(),
       }
