@@ -150,6 +150,7 @@ client.on('message', async (message) => {
         }],
       }
     });
+    await message.delete();
   }
 });
 
