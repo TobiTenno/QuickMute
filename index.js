@@ -88,14 +88,14 @@ client.on('message', async (message) => {
     if(muteRegex.test(message.content)) {
       await handleMute(message, config, muteRegex.exec(message.content), log);
     }
-  }
     
+    if (message.content.startsWith(`${config.prefix}announce`)) {
+      await handleAnnounce(message, config, config.announcement.webhook.object);
+    }
+  }
+
   if (message.content.startsWith(`${config.prefix}report`)) {
     await handleReport(message, config);
-  }
-  
-  if (message.content.startsWith(`${config.prefix}announce`)) {
-    await handleAnnounce(message, config, config.announcement.webhook.object);
   }
 });
 
