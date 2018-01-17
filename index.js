@@ -78,7 +78,7 @@ client.on('ready', () => {
 
 client.on('message', async (message) => {
   // don't call if the caller is a bot  or it's not in the designated guild
-  if (message.author.bot || (message.channel.type !== 'text' && message.guild.id !== config.guildId)) return;
+  if (message.author.bot || !message.member || (message.channel.type !== 'text' && message.guild.id !== config.guildId)) return;
 
   if (message.member.roles.get(config.opRole)) {
     if (imgRegex.test(message.content)) {
