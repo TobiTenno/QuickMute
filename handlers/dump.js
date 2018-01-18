@@ -28,8 +28,8 @@ const handleDump = async (message, config) => {
           
           if (channelConfig.cleanFirst) {
               const chnl =  config.client.channels.get(channelConfig.target.channel);
-              if (chnl.messages.array().length > 2) {
-                await chnl.bulkDelete(channelConfig.messages.length);
+              if (chnl.messages.size > 1) {
+                await chnl.bulkDelete(tokens.length);
               }
           }
           for (const token of tokens) {
