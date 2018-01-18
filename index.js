@@ -4,7 +4,8 @@ const Discord = require('discord.js');
 const  { handleReport }  = require('./handlers/report.js');
 const { handleImage } = require('./handlers/images.js');
 const { handleMute } = require('./handlers/mute.js'); 
-const {handleAnnounce} = require('./handlers/announcement.js');
+const { handleAnnounce } = require('./handlers/announcement.js');
+const { handleDump } = require('./handlers/dump.js');
 
 const client = new Discord.Client();
 const config = {
@@ -24,7 +25,8 @@ const config = {
   guildId: process.env.GUILD_ID,
   deletePics: 100000,
   pingOp: process.env.PING_FOR_REPORT === 'true',
-  muteds: {}
+  muteds: {},
+  username: process.env.USERNAME,
 };
 
 const imgRegex = new RegExp(`^${config.prefix}(bi2|bi|rtp|wc|vaubanned)$`);
@@ -62,20 +64,6 @@ function log(message, type, color) {
   }
 }
 
-client.on('ready', () => {
-  config.logChannel = client.channels.get(config.logChannel);
-  config.reportChannel = client.channels.get(config.reportChannel);
-  config.guild = client.guilds.get(config.guildId);
-  log(`Bot started. ${client.users.size} users online.`, '', 0x77dd77);
-  client.user.setPresence({
-    status: 'online',
-    game: {
-      name: 'with your voice!',
-    },
-  });
-  config.announcement.webhook.object = new Discord.WebhookClient(config.announcement.webhook.id, config.announcement.webhook.token);
-});
-
 client.on('message', async (message) => {
   // don't call if the caller is a bot  or it's not in the designated guild
   if (message.author.bot || !message.member || (message.channel.type !== 'text' && message.guild.id !== config.guildId)) return;
@@ -93,10 +81,39 @@ client.on('message', async (message) => {
       await handleAnnounce(message, config, config.announcement.webhook.object);
     }
   }
+  
+  if (message.content.startsWith(`${config.prefix}dump`)) {
+    if (message.attachments.first() && message.member.roles.get(config.superOp)) {
+      await handleDump(message, config);
+    } else {
+      log('no attachment', 'error');
+    }
+  }
 
   if (message.content.startsWith(`${config.prefix}report`)) {
     await handleReport(message, config);
   }
+});
+
+client.on('ready', () => {
+  // Set up configs
+  config.logChannel = client.channels.get(config.logChannel);
+  config.reportChannel = client.channels.get(config.reportChannel);
+  config.guild = client.guilds.get(config.guildId);
+  config.log = log;
+  log(`Bot started. ${client.users.size} users online.`, '', 0x77dd77);
+  if (config.username) {
+      client.user.setUsername(config.username);
+  }
+  client.user.setPresence({
+    status: 'online',
+    game: {
+      name: 'with your voice!',
+    },
+  });
+  config.announcement.webhook.object = new Discord.WebhookClient(config.announcement.webhook.id, config.announcement.webhook.token);
+  config.superOp = process.env.SUPER_OP;
+  config.client = client;
 });
 
 client.login(config.token);

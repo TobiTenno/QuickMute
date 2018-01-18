@@ -9,7 +9,9 @@
   "author": "tobiah",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^11.2.1"
+    "discord.js": "^11.2.1",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2"
   },
   "engines": {
     "node": ">=8.0.0"
