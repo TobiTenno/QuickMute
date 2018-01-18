@@ -49,9 +49,10 @@ const handleDump = async (message, config) => {
           }
       }
     } catch (e) {
-      message.reply('Bad File');
+      await config.log(e.message, 'error');
+      await message.reply('Bad File');
     }
-    message.delete();
+    await message.delete();
   }
 
 };
