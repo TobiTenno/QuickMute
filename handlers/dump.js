@@ -26,12 +26,12 @@ const handleDump = async (message, config) => {
             target = new Discord.WebhookClient(channelConfig.target.webhook.id, channelConfig.target.webhook.token);
           }
           
-          if (channelConfig.cleanFirst) {
-              const chnl =  config.client.channels.get(channelConfig.target.channel);
-              if (chnl.messages.size > 1) {
-                await chnl.bulkDelete(tokens.length);
-              }
-          }
+          // if (channelConfig.cleanFirst) {
+          //     const chnl =  config.client.channels.get(channelConfig.target.channel);
+          //     if (chnl.messages.size > 1) {
+          //       await chnl.bulkDelete(tokens.length);
+          //     }
+          // }
           for (const token of tokens) {
             switch (token.type) {
             case "text":
