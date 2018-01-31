@@ -6,7 +6,7 @@ const handleReport = async (message, config) => {
   const context = messagesContext.map(msg => `**${msg.author}**\n\t${msg.content} ` +
     `${msg.attachments.length ? 'there are attachments' : ''}`).join('\n');
   
-  await config.reportChannel.send(config.pingOp ? '@here' : undefined, {
+  await config.reportChannel.send(config.pingOp ? `<@&${config.opRole}>` : undefined, {
     embed: {
       color: 0xff0000,
       title: `New Report from ${message.author.tag}`, 
