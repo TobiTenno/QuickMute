@@ -18,6 +18,11 @@ const images = {
     links: ['http://i.imgur.com/SHFjv3I.gif'],
     name: 'Vaubanned.gif',
     type: 'link'
+  },
+  muteIncoming: {
+    links: ['https://i.imgur.com/K0X8blG.gif'],
+    name: 'Silence.gif',
+    type: 'link'
   }
 };
 
@@ -53,6 +58,12 @@ const handleImage = async (message, config, matches) => {
       name: images.vaubanned.name,
       link: images.vaubanned.links[0],
       type: images.vaubanned.type,
+    };    
+  } else if (matches.includes('silence')) {
+    match = {
+      name: images.muteIncoming.name,
+      link: images.muteIncoming.links[0],
+      type: images.muteIncoming.type,
     };    
   }
   let msg;
