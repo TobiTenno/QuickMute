@@ -59,7 +59,7 @@ const handleImage = async (message, config, matches) => {
       link: images.vaubanned.links[0],
       type: images.vaubanned.type,
     };    
-  } else if (matches.includes('silence')) {
+  } else if (matches.includes('mi')) {
     match = {
       name: images.muteIncoming.name,
       link: images.muteIncoming.links[0],

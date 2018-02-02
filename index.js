@@ -29,7 +29,7 @@ const config = {
   username: process.env.USERNAME,
 };
 
-const imgRegex = new RegExp(`^${config.prefix}(bi2|bi|rtp|wc|vaubanned|silence)$`);
+const imgRegex = new RegExp(`^${config.prefix}(bi2|bi|rtp|wc|vaubanned|mi)$`);
 const muteRegex = new RegExp(`^${config.prefix}(um|qm)$`);
 
 function log(message, type, color) {
