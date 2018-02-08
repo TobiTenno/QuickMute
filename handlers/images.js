@@ -1,3 +1,5 @@
+'use strict';
+
 const images = {
   banIncoming: {
     links: ['https://i.imgur.com/iTV6wwM.png', 'https://i.imgur.com/URrJQ1U.png'],
@@ -17,61 +19,56 @@ const images = {
   vaubanned: {
     links: ['http://i.imgur.com/SHFjv3I.gif'],
     name: 'Vaubanned.gif',
-    type: 'link'
+    type: 'link',
   },
   muteIncoming: {
     links: ['https://i.imgur.com/K0X8blG.gif'],
     name: 'Silence.gif',
-    type: 'link'
-  }
+    type: 'link',
+  },
 };
 
 const handleImage = async (message, config, matches) => {
   let match;
-  
+
   if (matches.includes('bi2')) {
     match = {
       name: images.banIncoming.name,
       link: images.banIncoming.links[1],
       type: images.banIncoming.type,
-    };    
+    };
   } else if (matches.includes('bi')) {
     match = {
       name: images.banIncoming.name,
       link: images.banIncoming.links[0],
       type: images.banIncoming.type,
-    };    
+    };
   } else if (matches.includes('rtp')) {
     match = {
       name: images.readThePins.name,
       link: images.readThePins.links[0],
       type: images.readThePins.type,
-    };    
+    };
   } else if (matches.includes('wc')) {
     match = {
       name: images.wrongChannel.name,
       link: images.wrongChannel.links[0],
       type: images.wrongChannel.type,
-    };    
+    };
   } else if (matches.includes('vaubanned')) {
     match = {
       name: images.vaubanned.name,
       link: images.vaubanned.links[0],
       type: images.vaubanned.type,
-    };    
+    };
   } else if (matches.includes('mi')) {
     match = {
       name: images.muteIncoming.name,
       link: images.muteIncoming.links[0],
       type: images.muteIncoming.type,
-    };    
+    };
   }
-  let msg;
-  // if (match.type === 'embed') {
-  msg = await message.channel.send('', { file: { attachment: match.link, name: match.name } });
-  // } else {
-  //   msg = await message.channel.send(match.link);
-  // }
+  const msg = await message.channel.send('', { file: { attachment: match.link, name: match.name } });
   message.delete();
   msg.delete(config.deletePics);
 };

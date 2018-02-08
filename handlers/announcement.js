@@ -1,3 +1,5 @@
+'use strict';
+
 const handleAnnounce = async (message, config, webhook) => {
   const announcmentMsg = message.content.replace(`${config.prefix}announce`, '').trim();
   await webhook.send('_ _', {
@@ -6,13 +8,13 @@ const handleAnnounce = async (message, config, webhook) => {
       color: config.announcement.color,
       fields: [{
         name: '_ _',
-        value: announcmentMsg
-      }]
-    }]
+        value: announcmentMsg,
+      }],
+    }],
   });
   message.delete();
 };
 
 module.exports = {
-  handleAnnounce
+  handleAnnounce,
 };

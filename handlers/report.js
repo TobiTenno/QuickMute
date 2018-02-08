@@ -1,15 +1,17 @@
+'use strict';
+
 const handleReport = async (message, config) => {
   const messagesContext = await message.channel.fetchMessages({
-          limit: 5,
-          before: message.id
-        });
+    limit: 5,
+    before: message.id,
+  });
   const context = messagesContext.map(msg => `**${msg.author}**\n\t${msg.content} ` +
     `${msg.attachments.length ? 'there are attachments' : ''}`).join('\n');
-  
+
   await config.reportChannel.send(config.pingOp ? `<@&${config.opRole}>` : undefined, {
     embed: {
       color: 0xff0000,
-      title: `New Report from ${message.author.tag}`, 
+      title: `New Report from ${message.author.tag}`,
       fields: [{
         name: '_ _',
         value: message.content.replace(`${config.prefix}report`, ''),
@@ -27,7 +29,7 @@ const handleReport = async (message, config) => {
         inlinie: true,
       }],
       timestamp: new Date(),
-    }
+    },
   });
   await message.delete();
 };
