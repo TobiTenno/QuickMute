@@ -1,9 +1,9 @@
 'use strict';
 
 const Discord = require('discord.js');
-const  { handleReport }  = require('./handlers/report.js');
+const { handleReport } = require('./handlers/report.js');
 const { handleImage } = require('./handlers/images.js');
-const { handleMute } = require('./handlers/mute.js'); 
+const { handleMute } = require('./handlers/mute.js');
 const { handleAnnounce } = require('./handlers/announcement.js');
 const { handleDump } = require('./handlers/dump.js');
 
@@ -19,7 +19,7 @@ const config = {
       id: process.env.ANNOUNCEMENT_WEBHOOK_ID,
       token: process.env.ANNOUNCEMENT_WEBHOOK_TOKEN,
     },
-    color: parseInt(process.env.ANNOUNCMENT_EMBED_COLOR || "0", 10),
+    color: parseInt(process.env.ANNOUNCMENT_EMBED_COLOR || '0', 10),
     title: process.env.ANNOUNCMENT_EMBED_TITLE,
   },
   guildId: process.env.GUILD_ID,
@@ -72,16 +72,16 @@ client.on('message', async (message) => {
     if (imgRegex.test(message.content)) {
       await handleImage(message, config, imgRegex.exec(message.content));
     }
-    
-    if(muteRegex.test(message.content)) {
+
+    if (muteRegex.test(message.content)) {
       await handleMute(message, config, muteRegex.exec(message.content), log);
     }
-    
+
     if (message.content.startsWith(`${config.prefix}announce`)) {
       await handleAnnounce(message, config, config.announcement.webhook.object);
     }
   }
-  
+
   if (message.content.startsWith(`${config.prefix}dump`)) {
     if (message.attachments.first() && message.member.roles.get(config.superOp)) {
       await handleDump(message, config);
@@ -103,7 +103,7 @@ client.on('ready', () => {
   config.log = log;
   log(`Bot started. ${client.users.size} users online.`, '', 0x77dd77);
   if (config.username) {
-      client.user.setUsername(config.username);
+    client.user.setUsername(config.username);
   }
   client.user.setPresence({
     status: 'online',
@@ -111,7 +111,8 @@ client.on('ready', () => {
       name: 'with your voice!',
     },
   });
-  config.announcement.webhook.object = new Discord.WebhookClient(config.announcement.webhook.id, config.announcement.webhook.token);
+  config.announcement.webhook.object
+    = new Discord.WebhookClient(config.announcement.webhook.id, config.announcement.webhook.token);
   config.superOp = process.env.SUPER_OP;
   config.client = client;
 });

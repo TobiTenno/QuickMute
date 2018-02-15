@@ -12,11 +12,14 @@ const handleDump = async (message, config) => {
     let channelConfig;
 
     try {
-      channelConfig = JSON.parse(await request({
+      const reqRes = await request({
         uri: firstAttach.url,
-      }));
+      });
+      channelConfig = JSON.parse(reqRes);
     } catch (e) {
       message.reply('Couldn\'t get file.');
+      config.logger.error(e);
+      return;
     }
 
     try {
