@@ -76,19 +76,22 @@ client.on('message', async (message) => {
     if (muteRegex.test(message.content)) {
       await handleMute(message, config, muteRegex.exec(message.content), log);
     }
+  }
+
+  if(message.member.roles.get(config.superOp)) {
+    if (message.content.startsWith(`${config.prefix}dump`)) {
+      if (message.attachments.first()) {
+        await handleDump(message, config);
+      } else {
+        log('no attachment', 'error');
+      }
+    }
 
     if (message.content.startsWith(`${config.prefix}announce`)) {
       await handleAnnounce(message, config, config.announcement.webhook.object);
     }
   }
-
-  if (message.content.startsWith(`${config.prefix}dump`)) {
-    if (message.attachments.first() && message.member.roles.get(config.superOp)) {
-      await handleDump(message, config);
-    } else {
-      log('no attachment', 'error');
-    }
-  }
+  
 
   if (message.content.startsWith(`${config.prefix}report`)) {
     await handleReport(message, config);
