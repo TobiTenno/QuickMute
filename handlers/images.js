@@ -26,6 +26,11 @@ const images = {
     name: 'Silence.gif',
     type: 'link',
   },
+  rule1: {
+    links: ['https://i.imgur.com/VOrp87r.gif'],
+    name: 'Rule1.gif',
+    type: 'link',
+  }
 };
 
 const handleImage = async (message, config, matches) => {
@@ -66,6 +71,12 @@ const handleImage = async (message, config, matches) => {
       name: images.muteIncoming.name,
       link: images.muteIncoming.links[0],
       type: images.muteIncoming.type,
+    };
+  } else if (matches.includes('rule1')) {
+    match = {
+      name: images.rule1.name,
+      link: images.rule1.links[0],
+      type: images.rule1.type,
     };
   }
   const msg = await message.channel.send('', { file: { attachment: match.link, name: match.name } });
