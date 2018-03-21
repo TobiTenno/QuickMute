@@ -18,7 +18,7 @@ const handleDump = async (message, config) => {
       channelConfig = JSON.parse(reqRes);
     } catch (e) {
       message.reply('Couldn\'t get file.');
-      config.logger.error(e);
+      config.log(e, 'error');
       return;
     }
 
