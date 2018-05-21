@@ -111,7 +111,7 @@ client.on('ready', () => {
   client.user.setPresence({
     status: 'online',
     game: {
-      name: 'with your voice!',
+      name: process.env.QM_STATUS || 'with your voice!',
     },
   });
   config.announcement.webhook.object
