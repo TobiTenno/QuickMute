@@ -17,16 +17,20 @@ const handleReport = async (message, config) => {
         value: message.content.replace(`${config.prefix}report`, ''),
         inline: true,
       }, {
-        name: 'Context',
-        value: context,
-      }, {
         name: 'Channel',
         value: message.channel.toString(),
-        inlinie: true,
+        inline: true,
       }, {
         name: 'Reporter',
         value: message.author.toString(),
-        inlinie: true,
+        inline: true,
+      }, {
+        name: 'Voice Channel',
+        value: message.member.voiceChannel ? message.member.voiceChannel.name : 'Memeber not in voice channel',
+        inline: true,
+      }, {
+        name: 'Context',
+        value: context,
       }],
       timestamp: new Date(),
     },
