@@ -2,7 +2,7 @@
 
 const handleAnnounce = async (message, config, webhook) => {
   const announcmentMsg = message.content.replace(`${config.prefix}announce`, '').trim();
-  await webhook.send('_ _', {
+  await webhook.send({
     embeds: [{
       title: config.announcement.title,
       color: config.announcement.color,
