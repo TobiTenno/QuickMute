@@ -121,3 +121,4 @@ client.on('ready', () => {
 });
 
 client.login(config.token);
+setTimeout(() => { process.exit(128); }, 600000);
