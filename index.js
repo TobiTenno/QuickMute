@@ -121,4 +121,4 @@ client.on('ready', () => {
 });
 
 client.login(config.token);
-setTimeout(() => { process.exit(128); }, 600000);
+setTimeout(async () => { await client.destroy(); process.exit(128); }, 60000);
