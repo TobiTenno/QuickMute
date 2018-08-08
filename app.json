@@ -1,0 +1,83 @@
+{
+  "name": "quickmute",
+  "description": "QuickMute is a simple bot for announcements, user reports, and some silly Warframe images.",
+  "keywords": [
+    "discordapp",
+    "bots",
+    "moderation"
+  ],
+  "repository": "https://github.com/tobitenno/quickmute",
+  "website": "https://github.com/TobiTenno/QuickMute/blob/master/README.md",
+  "scripts": {
+  },
+  "env": {
+    "TOKEN": {
+        "description": "Your discord bot's token.",
+        "required": true
+    },
+    "GUILD_ID": {
+      "description": "The id for the server you are hosting this bot for.",
+      "required": true
+    },
+    "PREFIX": {
+      "description": "Command prefix to use.",
+      "required": false
+    },
+    "OP_ROLE": {
+      "description": "Discord Moderator Role ID.",
+      "required": true
+    },
+    "LOG_CHANNEL": {
+      "description": "Log channel ID, bot must have access.",
+      "required": true
+    },
+    "REPORT_CHANNEL": {
+      "description": "Report channel ID, bot must have access, moderator role should have access.",
+      "required": true
+    },
+    "ANNOUNCMENT_EMBED_COLOR": {
+      "description": "Integer value for color to be used on bot announcements.",
+      "required": false
+    },
+    "ANNOUNCMENT_EMBED_TITLE": {
+      "description": "Title to be used on announcement embeds.",
+      "required": false
+    },
+    "ANNOUNCEMENT_WEBHOOK_ID": {
+      "description": "Webhook ID for webhook pointing to announcement channel.",
+      "required": false
+    },
+    "ANNOUNCEMENT_WEBHOOK_TOKEN": {
+      "description": "Webhook Token for webhook pointing to announcement channel.",
+      "required": false
+    },
+    "PING_FOR_REPORT": {
+      "description": "Whether or not to ping for reports. 'true' if you want it to ping,  leave it empty if not.",
+      "required": false
+    },
+    "USERNAME": {
+      "description": "Bot username.",
+      "required": false
+    },
+    "QM_STATUS": {
+      "description": "Bot 'Now Playing' status.",
+      "required": false
+    },
+    "SUPER_OP": {
+      "description": "Super OP role, like the admin role, for announcements and dump command.",
+      "required": false
+    }    
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "addons": [],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
