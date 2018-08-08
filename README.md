@@ -3,6 +3,13 @@ A simple quick mute bot written in node.js
 
 ![QuickMute](https://raw.githubusercontent.com/TobiTenno/QuickMute/master/images/logotype_color.png "QuickMute is a handy bot")
 
+## Deploy your own
+
+In the interest of making this easier for you, I've set up an app.json and heroku deploy button (below).
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/tobitenno/quickmute)
+
+
 ## Getting Started
 1. Install node.js version 8 or higher, I prefer the LTS release.
 2. Clone this repo (`git clone https://github.com/TobiTenno/QuickMute.git`)
