@@ -8,6 +8,7 @@
   ],
   "repository": "https://github.com/tobitenno/quickmute",
   "website": "https://github.com/TobiTenno/QuickMute/blob/master/README.md",
+  "logo": "https://github.com/TobiTenno/QuickMute/raw/master/images/logomark_color.png",
   "scripts": {
   },
   "env": {
