@@ -101,7 +101,12 @@ client.on('message', async (message) => {
 client.on('ready', () => {
   // Set up configs
   config.logChannel = client.channels.get(config.logChannel);
-  config.reportChannel = client.channels.get(config.reportChannel);
+  if (client.channels.has(config.reportChannel)) {
+      config.reportChannel = client.channels.get(config.reportChannel);
+  } else {
+    log(`Could not set report channel: ${config.reportChannel}`, 'error');
+    config.reportChannel = undefined;
+  }
   config.guild = client.guilds.get(config.guildId);
   config.log = log;
   log(`Bot started. ${client.users.size} users online.`, '', 0x77dd77);
