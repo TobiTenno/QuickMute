@@ -102,11 +102,12 @@ client.on('ready', () => {
   // Set up configs
   if (client.guilds.has(config.guildId)) {
     config.guild = client.guilds.get(config.guildId);
+    log(`Initialized guild. ${config.guild.name} : ${config.guild.memberCount} members : ${config.guild.channels.size} channels`, 'debug');
 
     if (config.guild.channels.has(config.logChannelId)) {
       config.logChannel = config.guild.channels.get(config.logChannelId);
     } else {
-      log(`Could not set log channel: ${config.logChannel}`, 'error');
+      log(`Could not set log channel: ${config.logChannelId}`, 'error');
     }
 
     if (config.guild.channels.has(config.reportChannelId)) {
