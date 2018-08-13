@@ -12,8 +12,8 @@ const config = {
   token: process.env.TOKEN,
   prefix: process.env.PREFIX || '!',
   opRole: process.env.OP_ROLE,
-  logChannel: process.env.LOG_CHANNEL,
-  reportChannel: process.env.REPORT_CHANNEL || process.env.LOG_CHANNEL,
+  logChannelOd: process.env.LOG_CHANNEL,
+  reportChannelId: process.env.REPORT_CHANNEL || process.env.LOG_CHANNEL,
   announcement: {
     webhook: {
       id: process.env.ANNOUNCEMENT_WEBHOOK_ID,
@@ -103,21 +103,20 @@ client.on('ready', () => {
   if (client.guilds.has(config.guildId)) {
     config.guild = client.guilds.get(config.guildId);
 
-    if (config.guild.channels.has(config.logChannel)) {
-      config.logChannel = config.guild.channels.get(config.logChannel);
+    if (config.guild.channels.has(config.logChannelId)) {
+      config.logChannel = config.guild.channels.get(config.logChannelId);
     } else {
-      config.logChannel = undefined;
       log(`Could not set log channel: ${config.logChannel}`, 'error');
     }
 
-    if (config.guild.channels.has(config.reportChannel)) {
-      config.reportChannel = config.guild.channels.get(config.reportChannel);
+    if (config.guild.channels.has(config.reportChannelId)) {
+      config.reportChannel = config.guild.channels.get(config.reportChannelId);
     } else {
-      log(`Could not set report channel: ${config.reportChannel}`, 'error');
-      config.reportChannel = undefined;
+      log(`Could not set report channel: ${config.reportChannelId}`, 'error');
     }
   } else {
     log(`Could not set guild: ${config.guildId}`, 'error');
+    log(`Setup is incomplete!! ${JSON.stringify(config)}`);
   }
   config.log = log;
   log(`Bot started. ${client.users.size} users online.`, '', 0x77dd77);
