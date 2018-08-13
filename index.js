@@ -103,18 +103,18 @@ client.on('ready', () => {
   if (client.guilds.has(config.guildId)) {
     config.guild = client.guilds.get(config.guildId);
 
-    if (config.guild.channels.has(config.reportChannel)) {
-      config.reportChannel = config.guild.channels.get(config.reportChannel);
-    } else {
-      log(`Could not set report channel: ${config.reportChannel}`, 'error');
-      config.reportChannel = undefined;
-    }
-
     if (config.guild.channels.has(config.logChannel)) {
       config.logChannel = config.guild.channels.get(config.logChannel);
     } else {
       config.logChannel = undefined;
       log(`Could not set log channel: ${config.logChannel}`, 'error');
+    }
+
+    if (config.guild.channels.has(config.reportChannel)) {
+      config.reportChannel = config.guild.channels.get(config.reportChannel);
+    } else {
+      log(`Could not set report channel: ${config.reportChannel}`, 'error');
+      config.reportChannel = undefined;
     }
   } else {
     log(`Could not set guild: ${config.guildId}`, 'error');
