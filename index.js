@@ -100,14 +100,25 @@ client.on('message', async (message) => {
 
 client.on('ready', () => {
   // Set up configs
-  config.logChannel = client.channels.get(config.logChannel);
-  if (client.channels.has(config.reportChannel)) {
-      config.reportChannel = client.channels.get(config.reportChannel);
+  if (client.guilds.has(config.guildId)) {
+    config.guild = client.guilds.get(config.guildId);
+
+    if (config.guild.channels.has(config.reportChannel)) {
+      config.reportChannel = config.guild.channels.get(config.reportChannel);
+    } else {
+      log(`Could not set report channel: ${config.reportChannel}`, 'error');
+      config.reportChannel = undefined;
+    }
+
+    if (config.guild.channels.has(config.logChannel)) {
+      config.logChannel = config.guild.channels.get(config.logChannel);
+    } else {
+      log(`Could not set log channel: ${config.logChannel}`, 'error');
+      config.logChannel = undefined;
+    }
   } else {
-    log(`Could not set report channel: ${config.reportChannel}`, 'error');
-    config.reportChannel = undefined;
+    log(`Could not set guild: ${config.guildId}`, 'error');
   }
-  config.guild = client.guilds.get(config.guildId);
   config.log = log;
   log(`Bot started. ${client.users.size} users online.`, '', 0x77dd77);
   if (config.username) {
