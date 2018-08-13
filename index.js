@@ -113,8 +113,8 @@ client.on('ready', () => {
     if (config.guild.channels.has(config.logChannel)) {
       config.logChannel = config.guild.channels.get(config.logChannel);
     } else {
-      log(`Could not set log channel: ${config.logChannel}`, 'error');
       config.logChannel = undefined;
+      log(`Could not set log channel: ${config.logChannel}`, 'error');
     }
   } else {
     log(`Could not set guild: ${config.guildId}`, 'error');
