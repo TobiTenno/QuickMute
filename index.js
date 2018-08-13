@@ -12,7 +12,7 @@ const config = {
   token: process.env.TOKEN,
   prefix: process.env.PREFIX || '!',
   opRole: process.env.OP_ROLE,
-  logChannelOd: process.env.LOG_CHANNEL,
+  logChannelId: process.env.LOG_CHANNEL,
   reportChannelId: process.env.REPORT_CHANNEL || process.env.LOG_CHANNEL,
   announcement: {
     webhook: {
