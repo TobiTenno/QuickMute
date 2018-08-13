@@ -5,7 +5,7 @@ const handleReport = async (message, config) => {
     limit: 5,
     before: message.id,
   });
-  const context = messagesContext.map(msg => `**${msg.author}**\n\t${msg.content} ` +
+  const context = messagesContext.map(msg => `**${msg.author}:**\n>\t${msg.content} ` +
     `${msg.attachments.length ? 'there are attachments' : ''}`).join('\n');
   try {
     await config.reportChannel.send(config.pingOp ? `<@&${config.opRole}>` : undefined, {
