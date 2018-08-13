@@ -100,10 +100,8 @@ client.on('message', async (message) => {
 
 const setup = () => {
   if (!client.guilds.has(config.guildId) || !client.guilds.get(config.guildId).available) {
-    if (!config.guild.available) {
-      setTimeout(setup, 10000);
-      return;
-    }
+    setTimeout(setup, 10000);
+    return;
   }
   // Set up configs
   if (client.guilds.has(config.guildId)) {
