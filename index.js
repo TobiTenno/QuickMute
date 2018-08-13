@@ -98,10 +98,16 @@ client.on('message', async (message) => {
   }
 });
 
-client.on('ready', () => {
+const setup = () => {
+  if (!client.guilds.has(config.guildId) || !client.guilds.get(config.guildId).available) {
+    if (!config.guild.available) {
+      setTimeout(setup, 10000);
+      return;
+    }
+  }
   // Set up configs
   if (client.guilds.has(config.guildId)) {
-    config.guild = client.guilds.get(config.guildId);
+    config.guild = client.guilds.get(config.guildId);    
     log(`Initialized guild. ${config.guild.name} : ${config.guild.memberCount} members : ${config.guild.channels.size} channels`, 'debug');
 
     if (config.guild.channels.has(config.logChannelId)) {
@@ -134,7 +140,9 @@ client.on('ready', () => {
     = new Discord.WebhookClient(config.announcement.webhook.id, config.announcement.webhook.token);
   config.superOp = process.env.SUPER_OP;
   config.client = client;
-});
+};
+
+client.on('ready', setup);
 
 client.login(config.token);
 setTimeout(async () => { await client.destroy(); process.exit(128); }, 43200000);
