@@ -1,13 +1,14 @@
 'use strict';
 
-const Discord = require('discord.js');
+const { Client, WebhookClient } = require('discord.js');
 const { handleReport } = require('./handlers/report.js');
 const { handleImage } = require('./handlers/images.js');
 const { handleMute } = require('./handlers/mute.js');
 const { handleAnnounce } = require('./handlers/announcement.js');
 const { handleDump } = require('./handlers/dump.js');
+const DynamicVoiceHandler = require('./handlers/DynamicVoiceHandler');
 
-const client = new Discord.Client();
+const client = new Client();
 const config = {
   token: process.env.TOKEN,
   prefix: process.env.PREFIX || '!',
@@ -27,6 +28,10 @@ const config = {
   pingOp: process.env.PING_FOR_REPORT === 'true',
   muteds: {},
   username: process.env.USERNAME,
+  dynamicVoice: {
+    control: process.env.DYNAMIC_VOICE_TEMPLATE_CONTROL,
+    template: process.env.DYNAMIC_VOICE_TEMPLATE_ID,
+  },
 };
 
 const imgRegex = new RegExp(`^${config.prefix}(bi2|bi|rtp|wc|vaubanned|mi|rule1)$`);
@@ -44,10 +49,7 @@ function log(message, type, color) {
   }
   const embed = {
     color: eColor,
-    fields: [{
-      name: '_ _',
-      value: message,
-    }],
+    description: message,
     timestamp: new Date(now.getTime() + (now.getTimezoneOffset() * 60000)),
   };
   if (config.logChannel) {
@@ -78,7 +80,7 @@ client.on('message', async (message) => {
     }
   }
 
-  if(message.member.roles.get(config.superOp)) {
+  if (message.member.roles.get(config.superOp)) {
     if (message.content.startsWith(`${config.prefix}dump`)) {
       if (message.attachments.first()) {
         await handleDump(message, config);
@@ -91,7 +93,6 @@ client.on('message', async (message) => {
       await handleAnnounce(message, config, config.announcement.webhook.object);
     }
   }
-  
 
   if (message.content.startsWith(`${config.prefix}report`)) {
     await handleReport(message, config);
@@ -103,9 +104,10 @@ const setup = () => {
     setTimeout(setup, 10000);
     return;
   }
+
   // Set up configs
   if (client.guilds.has(config.guildId)) {
-    config.guild = client.guilds.get(config.guildId);    
+    config.guild = client.guilds.get(config.guildId);
     log(`Initialized guild. ${config.guild.name} : ${config.guild.memberCount} members : ${config.guild.channels.size} channels`, 'debug');
 
     if (config.guild.channels.has(config.logChannelId)) {
@@ -123,21 +125,27 @@ const setup = () => {
     log(`Could not set guild: ${config.guildId}`, 'error');
     log(`Setup is incomplete!! ${JSON.stringify(config)}`);
   }
+
   config.log = log;
   log(`Bot started. ${client.users.size} users online.`, '', 0x77dd77);
   if (config.username) {
     client.user.setUsername(config.username);
   }
+
   client.user.setPresence({
     status: 'online',
     game: {
       name: process.env.QM_STATUS || 'with your voice!',
     },
   });
-  config.announcement.webhook.object
-    = new Discord.WebhookClient(config.announcement.webhook.id, config.announcement.webhook.token);
+
+  config.announcement.webhook.object = new WebhookClient(
+    config.announcement.webhook.id, config.announcement.webhook.token,
+  );
   config.superOp = process.env.SUPER_OP;
   config.client = client;
+
+  config.voiceHandler = new DynamicVoiceHandler(config.client, config);
 };
 
 client.on('ready', setup);
