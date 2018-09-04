@@ -94,7 +94,7 @@ class DynamicVoiceHandler {
   }
 
   async addChannel() {
-    const newChannel = await this.config.dynamicVoice.templateChannel.clone(generator.make({ adjective: true }), true, true, 'Dynamic Voice Channels');
+    const newChannel = await this.config.dynamicVoice.templateChannel.clone(generator.make({ adjective: true, type: 'places' }), true, true, 'Dynamic Voice Channels');
     const currentDynamics = this.getCurrentChannels();
     currentDynamics.push(newChannel);
     newChannel.setParent(this.config.dynamicVoice.templateChannel.parentID, 'Moving channel for Dynamic channel');
