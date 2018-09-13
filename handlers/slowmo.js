@@ -25,7 +25,7 @@ const slowmo = async (message, config) => {
         message.react('🚫');
       } else {
         message.react('✅');
-        (await message.reply(`Slow mode set to ${time}s`)).delete(10000);
+        (await message.reply(`Slow mode set to ${time}s`)).delete(1000);
       }
     } catch (error) {
       message.react('❌');
@@ -33,7 +33,7 @@ const slowmo = async (message, config) => {
     }
   }
   
-  await message.delete(5000);
+  await message.delete(1000);
 };
 
 module.exports = { slowmo };
