@@ -21,9 +21,11 @@ const slowmo = async (message, config) => {
         json: true,
       });
       if (time === 0) {
-        message.reply('Disabled rate limit');
+        message.react('✓');
+        message.react('🚫');
       } else {
-        message.reply(`Set rate limit to ${time}s`);
+        message.react('✓');
+        (await message.reply(`Slow mode set to ${time}s`)).delete(10000);
       }
     } catch (error) {
       message.react('❌');
@@ -31,7 +33,7 @@ const slowmo = async (message, config) => {
     }
   }
   
-  await message.delete();
+  await message.delete(5000);
 };
 
 module.exports = { slowmo };
