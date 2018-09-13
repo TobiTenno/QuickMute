@@ -21,10 +21,10 @@ const slowmo = async (message, config) => {
         json: true,
       });
       if (time === 0) {
-        message.react('✓');
+        message.react('✅');
         message.react('🚫');
       } else {
-        message.react('✓');
+        message.react('✅');
         (await message.reply(`Slow mode set to ${time}s`)).delete(10000);
       }
     } catch (error) {
