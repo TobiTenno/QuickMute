@@ -6,6 +6,7 @@ const { handleImage } = require('./handlers/images.js');
 const { handleMute } = require('./handlers/mute.js');
 const { handleAnnounce } = require('./handlers/announcement.js');
 const { handleDump } = require('./handlers/dump.js');
+const { slowmo } = require('./handlers/slowmo');
 const DynamicVoiceHandler = require('./handlers/DynamicVoiceHandler');
 
 const client = new Client();
@@ -91,6 +92,10 @@ client.on('message', async (message) => {
 
     if (message.content.startsWith(`${config.prefix}announce`)) {
       await handleAnnounce(message, config, config.announcement.webhook.object);
+    }
+    
+    if (message.content.startsWith(`${config.prefix}slowmo`)) {
+      await slowmo(message, config);
     }
   }
 
