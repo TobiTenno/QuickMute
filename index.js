@@ -93,7 +93,7 @@ client.on('message', async (message) => {
     if (message.content.startsWith(`${config.prefix}announce`)) {
       await handleAnnounce(message, config, config.announcement.webhook.object);
     }
-    
+
     if (message.content.startsWith(`${config.prefix}slowmo`)) {
       await slowmo(message, config);
     }
