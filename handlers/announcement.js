@@ -6,10 +6,7 @@ const handleAnnounce = async (message, config, webhook) => {
     embeds: [{
       title: config.announcement.title,
       color: config.announcement.color,
-      fields: [{
-        name: '_ _',
-        value: announcmentMsg,
-      }],
+      description: announcmentMsg,
     }],
   });
   message.delete();
