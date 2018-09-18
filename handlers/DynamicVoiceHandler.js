@@ -84,7 +84,11 @@ class DynamicVoiceHandler {
       if (currChannel.id === channelToRemove.id) {
         indexToRemove = index;
         if (!channelToRemove.deleted) {
-          channelToRemove.delete('Removing for dynamic channels');
+          try {
+            channelToRemove.delete('Removing for dynamic channels');
+          } catch (error) {
+            this.config.log(error, 'error');
+          }
         }
       }
     });
@@ -94,14 +98,19 @@ class DynamicVoiceHandler {
   }
 
   async addChannel() {
-    const newChannel = await this.config.dynamicVoice.templateChannel.clone(generator.make({ adjective: true, type: 'places' }), true, true, 'Dynamic Voice Channels');
-    const currentDynamics = this.getCurrentChannels();
-    currentDynamics.push(newChannel);
-    newChannel.setParent(this.config.dynamicVoice.templateChannel.parentID, 'Moving channel for Dynamic channel');
-    this.config.dynamicVoice.controlChannel.setTopic(currentDynamics.map(channel => channel.id).join('\n'));
-    await newChannel.setUserLimit(this.config.dynamicVoice.templateChannel.userLimit, 'Channel setup for Dynamic Channel');
-    this.config.log(`Added <#${newChannel.id}>`);
-    return newChannel;
+    try {
+      const newChannel = await this.config.dynamicVoice.templateChannel.clone(generator.make({ adjective: true, type: 'places' }), true, true, 'Dynamic Voice Channels');
+      const currentDynamics = this.getCurrentChannels();
+      currentDynamics.push(newChannel);
+      newChannel.setParent(this.config.dynamicVoice.templateChannel.parentID, 'Moving channel for Dynamic channel');
+      this.config.dynamicVoice.controlChannel.setTopic(currentDynamics.map(channel => channel.id).join('\n'));
+      await newChannel.setUserLimit(this.config.dynamicVoice.templateChannel.userLimit, 'Channel setup for Dynamic Channel');
+      this.config.log(`Added <#${newChannel.id}>`);
+      return newChannel;
+    } catch (error) {
+      this.config.log(error, 'error');
+      return undefined;
+    }
   }
 
   getCurrentChannels() {
