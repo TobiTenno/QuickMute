@@ -70,7 +70,7 @@ client.on('message', async (message) => {
   // don't call if the caller is a bot  or it's not in the designated guild
   if (message.author.bot || !message.member || (message.channel.type !== 'text' && message.guild.id !== config.guildId)) return;
 
-  if (message.member.roles.get(config.opRole)) {
+  if (message.member.roles.has(config.opRole)) {
     if (imgRegex.test(message.content)) {
       await handleImage(message, config, imgRegex.exec(message.content));
     }
@@ -146,6 +146,26 @@ const setup = () => {
   config.client = client;
 
   config.voiceHandler = new DynamicVoiceHandler(config.client, config);
+
+  if (config.opRole) {
+    client.on('messageReactionAdd', (reaction, user) => {
+      if (reaction.message.guild
+        && reaction.message.guild.id === config.guild.id
+        && config.guild.members.has(user.id)
+        && config.guild.members.get(user.id).roles.has(config.opRole)) {
+        switch (reaction.emoji.name) {
+          case '🚫':
+            if (config.guild.me.hasPermission('MANAGE_MESSAGES') && reaction.message.deletable) {
+              reaction.message.delete();
+            }
+            break;
+          default:
+            break;
+        }
+      }
+    });
+    config.log('Constructed message reaction listener');
+  }
 };
 
 client.on('ready', setup);
