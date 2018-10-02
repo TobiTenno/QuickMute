@@ -36,9 +36,12 @@ class DynamicVoiceHandler {
       if (!this.channels) {
         this.getCurrentChannels();
       }
-      return this.channels.filter(channel => this.checkIfShouldFilter(
-        channel, oldMember, newMember,
-      )).length > 0;
+      if (this.channels.length) {
+        return this.channels.filter(channel => this.checkIfShouldFilter(
+          channel, oldMember, newMember,
+        )).length > 0;
+      }
+      return false;
     }
     return isGuild;
   }
