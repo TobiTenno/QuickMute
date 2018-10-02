@@ -4,7 +4,6 @@ const { Generator } = require('warframe-name-generator');
 
 const generator = new Generator();
 
-
 class DynamicVoiceHandler {
   constructor(client, config) {
     this.client = client;
@@ -114,11 +113,14 @@ class DynamicVoiceHandler {
   }
 
   getCurrentChannels() {
-    this.channels = this.config.dynamicVoice.controlChannel.topic
-      .split('\n')
-      .filter(id => this.config.guild.channels.has(id))
-      .map(id => this.config.guild.channels.get(id));
-    return this.channels;
+    if (this.config.dynamicVoice.controlChannel) {
+      this.channels = this.config.dynamicVoice.controlChannel.topic
+        .split('\n')
+        .filter(id => this.config.guild.channels.has(id))
+        .map(id => this.config.guild.channels.get(id));
+      return this.channels;
+    }
+    return [];
   }
 }
 
