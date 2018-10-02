@@ -36,7 +36,7 @@ class DynamicVoiceHandler {
       if (!this.channels) {
         this.getCurrentChannels();
       }
-      if (this.channels.length) {
+      if (this.channels && this.channels.length) {
         return this.channels.filter(channel => this.checkIfShouldFilter(
           channel, oldMember, newMember,
         )).length > 0;
