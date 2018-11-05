@@ -99,9 +99,9 @@ client.on('message', async (message) => {
 //     }
   }
 
-  if (message.content.startsWith(`${config.prefix}report`)) {
-    await handleReport(message, config);
-  }
+//   if (message.content.startsWith(`${config.prefix}report`)) {
+//     await handleReport(message, config);
+//   }
 });
 
 const setup = () => {
